@@ -1,6 +1,6 @@
 use std::io;
 
-use rustfuck::interpreter::parser::Parser;
+use rustfuck::interpreter::{handler::Handler, memory_tape::MemoryTape, parser::Parser};
 
 fn main() {
     println!("Enter the Brainfuck code:");
@@ -12,7 +12,10 @@ fn main() {
 
     let instruction_set = Parser::parse_code(code);
 
-    for instruction in instruction_set.iter() {
-        println!("{:?}", instruction)
-    }
+    let memory_tape = MemoryTape::new(0);
+    let mut handler = Handler::new(memory_tape);
+
+    handler.run(&instruction_set);
+
+    println!("\n\nEnd.")
 }
