@@ -1,8 +1,8 @@
 use std::io::{self, Read};
 
 pub struct MemoryTape {
-    storage: Vec<u8>,
-    pointer: u16,
+    pub storage: Vec<u8>,
+    pub pointer: u16,
 }
 
 impl MemoryTape {
@@ -16,31 +16,23 @@ impl MemoryTape {
     }
 
     pub fn move_left(&mut self) {
-        if self.pointer > 0 {
-            self.pointer -= 1;
-        }
+        self.pointer = self.pointer.wrapping_sub(1);
     }
 
     pub fn move_right(&mut self) {
-        if self.pointer < u16::MAX {
-            self.pointer += 1;
-        }
+        self.pointer = self.pointer.wrapping_add(1);
     }
 
     pub fn increment(&mut self) {
-        if self.storage[self.pointer as usize] < u8::MAX {
-            self.storage[self.pointer as usize] += 1;
-        } else {
-            self.storage[self.pointer as usize] = 0;
-        }
+        self.storage[self.pointer as usize] = self.storage[
+            self.pointer as usize
+        ].wrapping_add(1);
     }
 
     pub fn decrement(&mut self) {
-        if self.storage[self.pointer as usize] > 0 {
-            self.storage[self.pointer as usize] -= 1;
-        } else {
-            self.storage[self.pointer as usize] = u8::MAX;
-        }
+        self.storage[self.pointer as usize] = self.storage[
+            self.pointer as usize
+        ].wrapping_sub(1);
     }
 
     pub fn output(&mut self) {
@@ -49,7 +41,9 @@ impl MemoryTape {
 
     pub fn input(&mut self) {
         let mut input: [u8; 1] = [0];
-        io::stdin().read_exact(&mut input).expect("Failed to read input from stdin");
+        io::stdin()
+            .read_exact(&mut input)
+            .expect("Failed to read input from stdin");
         self.storage[self.pointer as usize] = input[0];
     }
 }

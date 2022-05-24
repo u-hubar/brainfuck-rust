@@ -12,8 +12,8 @@ pub enum Instruction {
 }
 
 impl From<&char> for Instruction {
-    fn from(char: &char) -> Self {
-        match char {
+    fn from(instr_char: &char) -> Self {
+        match instr_char {
             '>' => Instruction::MoveRight,
             '<' => Instruction::MoveLeft,
             '+' => Instruction::IncrementValue,

@@ -10,7 +10,7 @@ fn main() {
         .read_line(&mut code)
         .expect("Failed to read line");
 
-    let instruction_set = Parser::parse_code(code);
+    let instruction_set = Parser::parse_code(code).unwrap();
 
     let memory_tape = MemoryTape::new(0);
     let mut handler = Handler::new(memory_tape);

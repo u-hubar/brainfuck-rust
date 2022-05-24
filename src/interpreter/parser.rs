@@ -1,15 +1,34 @@
-use super::instruction::Instruction;
+use super::{error::ParseError, instruction::Instruction};
 
 pub struct Parser;
 
 impl Parser {
-    pub fn parse_code(code: String) -> Vec<Instruction> {
+    pub fn parse_code(code: String) -> Result<Vec<Instruction>, ParseError> {
         let mut instruction_set = Vec::new();
+        let mut unclosed_loops = 0;
 
-        for char in code.chars() {
-            instruction_set.push(Instruction::from(&char));
+        for instr_char in code.chars() {
+            let instruction = Instruction::from(&instr_char);
+
+            match instruction {
+                Instruction::OpenLoop => {
+                    unclosed_loops += 1;
+                },
+                Instruction::CloseLoop => {
+                    unclosed_loops -= 1;
+                },
+                _ => {}
+            }
+
+            instruction_set.push(instruction);
         }
 
-        instruction_set
+        if unclosed_loops == 0 {
+            Ok(instruction_set)
+        } else if unclosed_loops < 0 {
+            Err(ParseError::InvalidCloseBracket)
+        } else  {
+            Err(ParseError::InvalidOpenBracket)
+        }
     }
 }
