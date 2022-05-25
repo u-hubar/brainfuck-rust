@@ -25,7 +25,7 @@ fn main() {
             let mut filename = String::new();
             read_input(&mut filename, "\nEnter filename:");
 
-            if !valid_extension(filename.as_str(), "rf") {
+            if !valid_extension(filename.as_str(), vec!("bf", "rf")) {
                 panic!("Extension for {} is not supported.", filename)
             }
 
@@ -62,11 +62,11 @@ fn read_input(string: &mut String, text: &str) -> String {
     string.to_string()
 }
 
-fn valid_extension(filename: &str, extension: &str) -> bool {
+fn valid_extension(filename: &str, extensions: Vec<&str>) -> bool {
     let file_ext = Path::new(filename)
         .extension()
         .and_then(OsStr::to_str)
         .unwrap();
 
-    file_ext.eq(extension)
+    extensions.contains(&file_ext)
 }
