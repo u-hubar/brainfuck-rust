@@ -43,7 +43,6 @@ fn main() {
     let memory_tape = MemoryTape::new(0);
     let mut handler = Handler::new(memory_tape);
 
-    print!("\nOutput: ");
     handler.run(&instruction_set);
 
     println!("\n\nEnd.")

@@ -7,7 +7,7 @@ pub struct MemoryTape {
 
 impl MemoryTape {
     pub fn new(pointer: u16) -> Self {
-        let storage: Vec<u8> = vec![0; u16::MAX as usize];
+        let storage: Vec<u8> = vec![0; u16::MAX as usize + 1];
 
         Self {
             storage,

@@ -17,6 +17,7 @@ impl Parser {
                 Instruction::CloseLoop => {
                     unclosed_loops -= 1;
                 },
+                Instruction::Ignore => { continue; },
                 _ => {}
             }
 
