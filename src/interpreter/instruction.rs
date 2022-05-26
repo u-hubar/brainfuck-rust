@@ -7,6 +7,7 @@ pub enum Instruction {
     Output,
     Input,
     OpenLoop,
+    ExecuteLoopBody(Vec<Instruction>),
     CloseLoop,
     Ignore,
 }

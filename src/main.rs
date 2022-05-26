@@ -25,7 +25,7 @@ fn main() {
             let mut filename = String::new();
             read_input(&mut filename, "\nEnter filename:");
 
-            if !valid_extension(filename.as_str(), vec!("bf", "rf")) {
+            if !valid_extension(filename.as_str(), vec!["bf", "rf"]) {
                 panic!("Extension for {} is not supported.", filename)
             }
 
@@ -38,7 +38,7 @@ fn main() {
         _ => { panic!("'{}' is not supported!", option); },
     };
 
-    let instruction_set = Parser::parse_code(code).unwrap();
+    let instruction_set = Parser::parse_code(code.as_str()).unwrap();
 
     let memory_tape = MemoryTape::new(0);
     let mut handler = Handler::new(memory_tape);
@@ -48,7 +48,7 @@ fn main() {
     println!("\n\nEnd.")
 }
 
-fn read_input(string: &mut String, text: &str) -> String {
+fn read_input(string: &mut String, text: &str) {
     println!("{}", text);
 
     io::stdin()
@@ -57,8 +57,6 @@ fn read_input(string: &mut String, text: &str) -> String {
 
     let truncate_len = string.trim_end_matches(&['\r', '\n'][..]).len();
     string.truncate(truncate_len);
-
-    string.to_string()
 }
 
 fn valid_extension(filename: &str, extensions: Vec<&str>) -> bool {
