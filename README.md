@@ -1,8 +1,8 @@
-# Rustfuck
+# <center>Rustfuck</center>
 
 </br>
 
-## Description
+## <center>Description</center>
 ___
 Basic Brainfuck interpeter written in Rust.
 
@@ -12,7 +12,7 @@ ___
 </br>
 </br>
 
-## Instructions
+## <center>Instructions</center>
 ___
 
 | **RF** |          **Instruction**          |                      **Description**                      |
@@ -33,7 +33,7 @@ ___
 </br>
 </br>
 
-## Roadmap
+## <center>Roadmap</center>
 
 ___
 ## 1.0
