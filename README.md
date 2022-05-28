@@ -1,8 +1,8 @@
-# <center>Rustfuck</center>
+# Rustfuck
 
 </br>
 
-## <center>Description</center>
+## Description
 ___
 Basic Brainfuck interpeter written in Rust.
 
@@ -12,7 +12,7 @@ ___
 </br>
 </br>
 
-## <center>Instructions</center>
+## Instructions
 ___
 
 | **RF** |          **Instruction**          |                      **Description**                      |
@@ -33,7 +33,7 @@ ___
 </br>
 </br>
 
-## <center>Roadmap</center>
+## Roadmap
 
 ___
 ## 1.0
@@ -41,7 +41,7 @@ ___
 - [x] Reading code from file
 ___
 ## 1.1
-- [ ] Contract optimization
+- [x] Contract optimization
 - [ ] Clearloop optimization
 - [ ] Copyloop optimization
 - [ ] Multiloop optimization
