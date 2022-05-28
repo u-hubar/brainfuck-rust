@@ -1,4 +1,4 @@
-use std::{ffi::OsStr, fs::File, io::{self, prelude::*}, path::Path};
+use std::{ffi::OsStr, fs::File, io::{self, prelude::*}, path::Path, time::Instant};
 
 use rustfuck::interpreter::{handler::Handler, memory_tape::MemoryTape, parser::Parser};
 
@@ -38,14 +38,20 @@ fn main() {
         _ => { panic!("'{}' is not supported!", option); },
     };
 
+    let now = Instant::now();
     let instruction_set = Parser::parse_code(code.as_str()).unwrap();
+    let elapsed = now.elapsed();
+    println!("Parsing done in {:.2?}\n", elapsed);
 
     let memory_tape = MemoryTape::new(0);
     let mut handler = Handler::new(memory_tape);
 
+    let now = Instant::now();
     handler.run(&instruction_set);
+    let elapsed = now.elapsed();
+    println!("\n\nExecution done in {:.2?}", elapsed);
 
-    println!("\n\nEnd.")
+    println!("End.")
 }
 
 fn read_input(string: &mut String, text: &str) {
