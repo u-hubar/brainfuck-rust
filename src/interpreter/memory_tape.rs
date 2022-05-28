@@ -15,24 +15,24 @@ impl MemoryTape {
         }
     }
 
-    pub fn move_left(&mut self) {
-        self.pointer = self.pointer.wrapping_sub(1);
+    pub fn move_left(&mut self, step: u16) {
+        self.pointer = self.pointer.wrapping_sub(step);
     }
 
-    pub fn move_right(&mut self) {
-        self.pointer = self.pointer.wrapping_add(1);
+    pub fn move_right(&mut self, step: u16) {
+        self.pointer = self.pointer.wrapping_add(step);
     }
 
-    pub fn increment(&mut self) {
+    pub fn increment(&mut self, addend: u8) {
         self.storage[self.pointer as usize] = self.storage[
             self.pointer as usize
-        ].wrapping_add(1);
+        ].wrapping_add(addend);
     }
 
-    pub fn decrement(&mut self) {
+    pub fn decrement(&mut self, subtrahend: u8) {
         self.storage[self.pointer as usize] = self.storage[
             self.pointer as usize
-        ].wrapping_sub(1);
+        ].wrapping_sub(subtrahend);
     }
 
     pub fn output(&mut self) {
