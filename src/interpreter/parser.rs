@@ -20,13 +20,23 @@ impl Parser {
                 },
                 Instruction::CloseLoop => {
                     if opened_loops == 1 {
-                        instruction_set.push(
-                            Instruction::ExecuteLoopBody(
-                                Parser::parse_code(
-                                    &code[loop_start..i]
-                                ).unwrap()
-                            )
-                        );
+                        let loop_body = Parser::parse_code(
+                            &code[loop_start..i]
+                        ).unwrap();
+
+                        let loop_body_instr;
+
+                        if loop_body.len() == 1 {
+                            loop_body_instr = match loop_body[0] {
+                                Instruction::IncrementValue(_) |
+                                Instruction::DecrementValue(_) => Instruction::ClearLoop,
+                                _ => Instruction::ExecuteLoopBody(loop_body),
+                            };
+                        } else {
+                            loop_body_instr = Instruction::ExecuteLoopBody(loop_body);
+                        }
+
+                        instruction_set.push(loop_body_instr);
                     } else if opened_loops == 0 {
                         return Err(ParseError::InvalidCloseBracket)
                     };
