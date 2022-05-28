@@ -42,7 +42,7 @@ ___
 ___
 ## 1.1
 - [x] Contract optimization
-- [ ] Clearloop optimization
+- [x] Clearloop optimization
 - [ ] Copyloop optimization
 - [ ] Multiloop optimization
 - [ ] Scanloop optimization
