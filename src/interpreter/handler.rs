@@ -19,6 +19,16 @@ impl Handler {
                 Instruction::Output => self.memory_tape.output(),
                 Instruction::Input => self.memory_tape.input(),
                 Instruction::ExecuteLoopBody(loop_instructions) => {
+                    if loop_instructions.len() == 1 {
+                        match loop_instructions[0] {
+                            Instruction::IncrementValue(_) |
+                            Instruction::DecrementValue(_) => {
+                                self.memory_tape.clear();
+                            },
+                            _ => {},
+                        };
+                    }
+
                     while self.memory_tape.storage[self.memory_tape.pointer as usize] != 0 {
                         self.run(loop_instructions);
                     }
