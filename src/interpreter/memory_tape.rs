@@ -35,6 +35,10 @@ impl MemoryTape {
         ].wrapping_sub(subtrahend);
     }
 
+    pub fn clear(&mut self) {
+        self.storage[self.pointer as usize] = 0;
+    }
+
     pub fn output(&mut self) {
         print!("{}", self.storage[self.pointer as usize] as char)
     }

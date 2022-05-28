@@ -18,6 +18,7 @@ impl Handler {
                 Instruction::DecrementValue(val) => self.memory_tape.decrement(*val as u8),
                 Instruction::Output => self.memory_tape.output(),
                 Instruction::Input => self.memory_tape.input(),
+                Instruction::ClearLoop => self.memory_tape.clear(),
                 Instruction::ExecuteLoopBody(loop_instructions) => {
                     while self.memory_tape.storage[self.memory_tape.pointer as usize] != 0 {
                         self.run(loop_instructions);
