@@ -18,11 +18,12 @@ impl Handler {
                 Instruction::MoveRight(step) => self.memory_tape.move_right(*step),
                 Instruction::IncrementValue(addend) => self.memory_tape.increment(*addend),
                 Instruction::DecrementValue(subtrahend) => self.memory_tape.decrement(*subtrahend),
-                Instruction::FindLoopGCD(zero_depth_multiplicand) => {
-                    last_loop_iters = Diophantine::solve_naive(
-                        self.memory_tape.actual_cell(),
-                        *zero_depth_multiplicand
-                    )
+                Instruction::SolveLoopDiophantine(zero_depth_multiplicand) => {
+                    last_loop_iters = Diophantine::solve_extended_gcd(
+                        *zero_depth_multiplicand,
+                        -((u8::MAX as isize) + 1),
+                        self.memory_tape.actual_cell() as isize,
+                    );
                 },
                 Instruction::MultiplyValue(offset, multiplicand) => {
                     self.memory_tape.multiply(last_loop_iters, *offset, *multiplicand)

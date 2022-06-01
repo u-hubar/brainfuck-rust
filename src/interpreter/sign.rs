@@ -67,7 +67,7 @@ impl<T: Unsigned + TryFrom<isize>> TryFrom<isize> for SignedInt<T> {
                 Err(err) => Err(err),
             }
         } else {
-            match T::try_from(num.wrapping_abs()) {
+            match T::try_from(num.abs()) {
                 Ok(num) => Ok(Self::Neg(num)),
                 Err(err) => Err(err),
             }

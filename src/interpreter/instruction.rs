@@ -9,7 +9,7 @@ pub enum Instruction {
     Output,
     Input,
     OpenLoop,
-    FindLoopGCD(SignedInt<u8>),
+    SolveLoopDiophantine(isize),
     ExecuteLoopBody(Vec<Instruction>),
     CloseLoop,
     ClearValue,

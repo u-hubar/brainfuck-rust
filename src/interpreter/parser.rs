@@ -51,8 +51,8 @@ impl Parser {
                             loop_body.clear();
 
                             instruction_set.push(
-                                Instruction::FindLoopGCD(
-                                    SignedInt::try_from(zero_depth_multiplicand).unwrap()
+                                Instruction::SolveLoopDiophantine(
+                                    zero_depth_multiplicand
                                 )
                             );
                             
