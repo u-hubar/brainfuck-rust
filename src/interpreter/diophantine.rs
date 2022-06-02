@@ -7,7 +7,7 @@ impl Diophantine {
     // step_size * x - 256 * y = -start_cell_value
     // We only need to find x, as it stands for number of iterations inside the loop
     pub fn solve_extended_gcd(a: isize, b: isize, c: isize) -> u8 {
-        let (gcd, xg, yg) = GCD::find_extended(a, b);
+        let (gcd, xg, yg) = GCD::extended_euclidean(a, b);
 
         if c % gcd != 0 {
             panic!("Solution for Diophantine equation isn't exist!");
