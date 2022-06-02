@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, mem::discriminant};
 
 use super::{error::ParseError, instruction::Instruction, sign::SignedInt};
 
@@ -9,7 +9,6 @@ impl Parser {
         let mut instruction_set = Vec::new();
         let mut loop_start = 0;
         let mut opened_loops = 0;
-        let mut last_char = '#';
 
         for (i, instr_char) in code.chars().enumerate() {
             match Instruction::from(&instr_char) {
@@ -81,27 +80,54 @@ impl Parser {
                         continue;
                     }
 
-                    if instr_char == last_char {
-                        match instruction_set.last_mut().unwrap() {
-                            Instruction::MoveRight(val) |
-                            Instruction::MoveLeft(val) => {
+                    let last_instr_enum = match instruction_set.last() {
+                        Some(last_instr) => discriminant(last_instr),
+                        None => {
+                            instruction_set.push(instruction);
+                            continue;
+                        },
+                    };
+                    let actual_instr_enum = discriminant(&instruction);
+
+                    match (instruction_set.last_mut().unwrap(), &instruction) {
+                        (
+                            Instruction::MoveRight(val) | Instruction::MoveLeft(val),
+                            Instruction::MoveRight(_) | Instruction::MoveLeft(_),
+                        ) => {
+                            if last_instr_enum == actual_instr_enum {
                                 *val += 1;
-                                continue;
-                            },
-                            Instruction::IncrementValue(val) |
-                            Instruction::DecrementValue(val) => {
+                            }
+                            else if *val > 1 {
+                                *val -= 1;
+                            }
+                            else {
+                                instruction_set.pop();
+                            }
+
+                            continue;
+                        },
+                        (
+                            Instruction::IncrementValue(val) | Instruction::DecrementValue(val),
+                            Instruction::IncrementValue(_) | Instruction::DecrementValue(_)
+                        ) => {
+                            if last_instr_enum == actual_instr_enum {
                                 *val += 1;
-                                continue;
-                            },
-                            _ => {},
-                        };
-                    }
+                            }
+                            else if *val > 1 {
+                                *val -= 1;
+                            }
+                            else {
+                                instruction_set.pop();
+                            }
+
+                            continue;
+                        },
+                        _ => {},
+                    };
 
                     instruction_set.push(instruction);
                 },
             }
-
-            last_char = instr_char;
         }
 
         if opened_loops == 0 {
