@@ -43,14 +43,18 @@ ___
 ## 1.1
 - [x] Contract optimization
 - [x] Clearloop optimization
-- [ ] Copyloop optimization
-- [ ] Multiloop optimization
+- ~~[x] Copyloop optimization~~
+- ~~[x] Multiloop optimization~~
+- [x] Diophantine loop optimization
 - [ ] Scanloop optimization
 - [ ] Offsetops optimization
+- [ ] Nested Diophantine loops optimization
 ___
 ## 1.2
+- [ ] Extended Stein's Algorithm optimization
 - [ ] u16 and u32 memory cells
 - [ ] Custom memory tape length
+- [ ] Tests
 ___
 ## 2.0
 - [ ] 2DFuck implementation

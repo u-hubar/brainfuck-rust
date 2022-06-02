@@ -1,15 +1,19 @@
+use super::sign::SignedInt;
+
 #[derive(Debug)]
 pub enum Instruction {
-    MoveRight(usize),
-    MoveLeft(usize),
-    IncrementValue(usize),
-    DecrementValue(usize),
+    MoveRight(u16),
+    MoveLeft(u16),
+    IncrementValue(u8),
+    DecrementValue(u8),
     Output,
     Input,
     OpenLoop,
+    SolveLoopDiophantine(isize),
     ExecuteLoopBody(Vec<Instruction>),
     CloseLoop,
-    ClearLoop,
+    ClearValue,
+    MultiplyValue(SignedInt<u16>, SignedInt<u8>),
     Ignore,
 }
 

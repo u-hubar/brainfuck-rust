@@ -1,4 +1,6 @@
-use super::{error::ParseError, instruction::Instruction};
+use std::collections::HashMap;
+
+use super::{error::ParseError, instruction::Instruction, sign::SignedInt};
 
 pub struct Parser;
 
@@ -20,23 +22,53 @@ impl Parser {
                 },
                 Instruction::CloseLoop => {
                     if opened_loops == 1 {
-                        let loop_body = Parser::parse_code(
+                        let mut loop_body = Parser::parse_code(
                             &code[loop_start..i]
                         ).unwrap();
 
-                        let loop_body_instr;
+                        let mut depth: isize = 0;
+                        let mut loop_muls: HashMap<isize, isize> = HashMap::new();
 
-                        if loop_body.len() == 1 {
-                            loop_body_instr = match loop_body[0] {
-                                Instruction::IncrementValue(_) |
-                                Instruction::DecrementValue(_) => Instruction::ClearLoop,
-                                _ => Instruction::ExecuteLoopBody(loop_body),
-                            };
-                        } else {
-                            loop_body_instr = Instruction::ExecuteLoopBody(loop_body);
+                        for inner_instr in loop_body.iter() {
+                            match *inner_instr {
+                                Instruction::MoveRight(step) => depth += step as isize,
+                                Instruction::MoveLeft(step) => depth -= step as isize,
+                                Instruction::IncrementValue(val) => {
+                                    *loop_muls.entry(depth).or_insert(0) += val as isize;
+                                }
+                                Instruction::DecrementValue(val) => {
+                                    *loop_muls.entry(depth).or_insert(0) -= val as isize;
+                                }
+                                _ => {
+                                    loop_muls.clear();
+                                    break;
+                                },
+                            }
                         }
 
-                        instruction_set.push(loop_body_instr);
+                        if loop_muls.contains_key(&0) && depth == 0 {
+                            let zero_depth_multiplicand = loop_muls.remove(&0).unwrap();
+                            loop_body.clear();
+
+                            instruction_set.push(
+                                Instruction::SolveLoopDiophantine(
+                                    zero_depth_multiplicand
+                                )
+                            );
+                            
+                            for (depth, multiplicand) in loop_muls {
+                                instruction_set.push(
+                                    Instruction::MultiplyValue(
+                                        SignedInt::try_from(depth).unwrap(),
+                                        SignedInt::try_from(multiplicand).unwrap(),
+                                    )
+                                );
+                            }
+
+                            instruction_set.push(Instruction::ClearValue);
+                        } else {
+                            instruction_set.push(Instruction::ExecuteLoopBody(loop_body));
+                        }
                     } else if opened_loops == 0 {
                         return Err(ParseError::InvalidCloseBracket)
                     };
@@ -52,7 +84,10 @@ impl Parser {
                     if instr_char == last_char {
                         match instruction_set.last_mut().unwrap() {
                             Instruction::MoveRight(val) |
-                            Instruction::MoveLeft(val) |
+                            Instruction::MoveLeft(val) => {
+                                *val += 1;
+                                continue;
+                            },
                             Instruction::IncrementValue(val) |
                             Instruction::DecrementValue(val) => {
                                 *val += 1;
