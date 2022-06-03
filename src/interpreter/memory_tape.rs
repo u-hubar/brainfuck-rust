@@ -38,8 +38,8 @@ impl MemoryTape {
     }
 
     pub fn multiply(&mut self, loop_iters: u8, offset: SignedInt<u16>, multiplicand: SignedInt<u8>) {
-        let new_pointer;
         let mul_product;
+        let new_pointer;
 
         match multiplicand {
             SignedInt::Pos(multiplicand) |
